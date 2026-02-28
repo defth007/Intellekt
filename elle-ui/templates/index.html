@@ -14,11 +14,11 @@
             <p class="subtitle">My Distractions</p>
 
             <div id="button-list">
-                <button class="btn btn-primary" type="button" onclick="showMessagePopup('phone')">
+                <button class="btn btn-primary" type="button" onclick="showPopup('phone')">
                     phone
                 </button>
 
-                <button class="btn btn-primary" type="button" onclick="showMessagePopup('food')">
+                <button class="btn btn-primary" type="button" onclick="showPopup('food')">
                     food
                 </button>
             </div>
@@ -32,6 +32,25 @@
         </div>
     </div>
 
+    <!-- Custom popup -->
+    <div id="popup-overlay" class="popup-overlay" style="display: none;">
+        <div class="popup-box">
+            <h2 id="popup-title">Item</h2>
+            <p id="popup-message"></p>
+
+            <textarea id="popup-input" rows="4" placeholder="Type your new message here..."></textarea>
+
+            <div class="popup-buttons">
+                <button class="btn btn-primary" type="button" onclick="customizeMessage()">
+                    Customize Message
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="closePopup()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const customMessages = {
             phone: "Put your phone away and focus.",
@@ -41,22 +60,26 @@
             tablewear: "Put the tablewear aside for now."
         };
 
-        function showMessagePopup(itemName) {
-            const currentMessage = customMessages[itemName] || "Default message for " + itemName;
-            const wantsToChange = confirm(
-                itemName + ":\n\n" +
-                currentMessage + "\n\n" +
-                "Press OK to change message.\n" +
-                "Press Cancel to keep it."
-            );
+        let currentItem = "";
 
-            if (wantsToChange) {
-                const newMessage = prompt("Change message for " + itemName + ":", currentMessage);
+        function showPopup(itemName) {
+            currentItem = itemName;
+            document.getElementById("popup-title").textContent = itemName;
+            document.getElementById("popup-message").textContent = customMessages[itemName] || "";
+            document.getElementById("popup-input").value = customMessages[itemName] || "";
+            document.getElementById("popup-overlay").style.display = "flex";
+        }
 
-                if (newMessage !== null && newMessage.trim() !== "") {
-                    customMessages[itemName] = newMessage;
-                    alert("New message saved for " + itemName + ":\n\n" + newMessage);
-                }
+        function closePopup() {
+            document.getElementById("popup-overlay").style.display = "none";
+        }
+
+        function customizeMessage() {
+            const newMessage = document.getElementById("popup-input").value.trim();
+
+            if (newMessage !== "") {
+                customMessages[currentItem] = newMessage;
+                document.getElementById("popup-message").textContent = newMessage;
             }
         }
 
@@ -83,7 +106,7 @@
             newButton.type = "button";
             newButton.textContent = itemName;
             newButton.onclick = function () {
-                showMessagePopup(itemName);
+                showPopup(itemName);
             };
 
             buttonList.appendChild(newButton);
