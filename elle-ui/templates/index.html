@@ -13,13 +13,15 @@
             <h1 class="title">Intellekt</h1>
             <p class="subtitle">My Distractions</p>
 
-            <button class="btn btn-primary" type="button" onclick="addMessage('phone')">
-                phone
-            </button>
+            <div id="button-list">
+                <button class="btn btn-primary" type="button" onclick="addMessage('phone')">
+                    phone
+                </button>
 
-            <button class="btn btn-primary" type="button" onclick="addMessage('food')">
-                food
-            </button>
+                <button class="btn btn-primary" type="button" onclick="addMessage('food')">
+                    food
+                </button>
+            </div>
 
             <select id="distraction-select" class="btn btn-secondary" onchange="handleDropdown()">
                 <option value="" disabled selected hidden>add distractions</option>
@@ -35,8 +37,7 @@
             let message = prompt("Enter your message for " + itemName + ":");
 
             if (message !== null && message.trim() !== "") {
-                document.getElementById("user-message").textContent =
-                    itemName + ": " + message;
+                alert(itemName + ": " + message);
             }
         }
 
@@ -44,9 +45,29 @@
             const select = document.getElementById("distraction-select");
             const itemName = select.value;
 
-            if (itemName) {
-                addMessage(itemName);
+            if (!itemName) {
+                return;
             }
+
+            const buttonList = document.getElementById("button-list");
+
+            const existingButtons = buttonList.getElementsByTagName("button");
+            for (let i = 0; i < existingButtons.length; i++) {
+                if (existingButtons[i].textContent.trim() === itemName) {
+                    select.selectedIndex = 0;
+                    return;
+                }
+            }
+
+            const newButton = document.createElement("button");
+            newButton.className = "btn btn-primary";
+            newButton.type = "button";
+            newButton.textContent = itemName;
+            newButton.onclick = function () {
+                addMessage(itemName);
+            };
+
+            buttonList.appendChild(newButton);
 
             select.selectedIndex = 0;
         }
