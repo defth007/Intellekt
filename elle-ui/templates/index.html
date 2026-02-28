@@ -10,21 +10,34 @@
     <h1>Intellekt</h1>
     <p>Customize your experience</p>
 
-    <button type="button" onclick="addMessage()">Customize message</button>
+    <div class="possible-items">
+        <div class="item-row">
+            <span class="item-name">Cell phone</span>
+            <button type="button" onclick="addMessage('message1')">Customize Message</button>
+            <span id="message1" class="message-output"></span>
+        </div>
 
-    <p id="user-message"></p>
+        <div class="item-row">
+            <span class="item-name">Food</span>
+            <button type="button" onclick="addMessage('message2')">Customize Message</button>
+            <span id="message2" class="message-output"></span>
+        </div>
+
+        <div class="item-row">
+            <span class="item-name">Person</span>
+            <button type="button" onclick="addMessage('message3')">Customize Message</button>
+            <span id="message3" class="message-output"></span>
+        </div>
+    </div>
 
     <script>
-        function addMessage() {
-            alert("button clicked");   // test line
-
-            let message = prompt("Enter your message:");
+        function addMessage(messageId) {
+            let message = prompt("Write your message:");
 
             if (message !== null && message.trim() !== "") {
-                document.getElementById("user-message").textContent = message;
+                document.getElementById(messageId).textContent = message;
             }
         }
     </script>
 </body>
 </html>
-
