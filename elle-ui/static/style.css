@@ -51,6 +51,7 @@ body {
     margin: 8px 0;
     width: 100%;
     transition: all 0.15s ease;
+    text-align: center;
 }
 
 .btn-primary {
@@ -62,6 +63,18 @@ body {
 .btn-primary:hover {
     background: #ffa000;          /* slightly darker on hover */
     transform: translateY(-1px);
+}
+
+/* Secondary / outline button */
+.btn-secondary {
+    background: transparent;
+    color: #ff9800;
+    border: 2px solid #ffb300;
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background: #fff3c4;
 }
 
 .btn-primary:active {
@@ -79,4 +92,21 @@ body {
     min-height: 40px;
     font-size: 18px;
     color: #6a4700;
+}
+
+/* popup overlay (the dark background area) */
+.popup-overlay {
+    position: fixed;
+    inset: 0;                 /* fills the screen */
+    display: flex;
+    justify-content: center;  /* horizontal center */
+    align-items: center;      /* vertical center */
+}
+
+/* the popup window itself */
+.popup-box {
+    background: #fffdf5;
+    padding: 25px;
+    border-radius: 16px;
+    border: 2px solid #ffe2a6;
 }
