@@ -4,31 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intellekt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="card">
             <h1 class="title">Intellekt</h1>
-            <p class="subtitle">Customize your experience</p>
+            <p class="subtitle">My Distractions</p>
 
-            <button class="btn btn-primary" type="button" onclick="addMessage()">
-                Customize message
+            <button class="btn btn-primary" type="button" onclick="addMessage('Phone')">
+                Phone
             </button>
+
+            <button class="btn btn-primary" type="button" onclick="addMessage('Food')">
+                Food
+            </button>
+
+            <select id="distraction-select" class="btn btn-primary" onchange="handleDropdown()">
+                <option value="" disabled selected hidden>Add distractions</option>
+                <option value="Bed">Bed</option>
+                <option value="Wine Glass">Wine Glass</option>
+                <option value="Tablewear">Tablewear</option>
+            </select>
 
             <p id="user-message" class="status-box"></p>
         </div>
     </div>
 
     <script>
-        function addMessage() {
-            alert("button clicked");   // test line
-
-            let message = prompt("Enter your message:");
+        function addMessage(itemName) {
+            let message = prompt("Enter your message for " + itemName + ":");
 
             if (message !== null && message.trim() !== "") {
-                document.getElementById("user-message").textContent = message;
+                document.getElementById("user-message").textContent =
+                    itemName + ": " + message;
             }
+        }
+
+        function handleDropdown() {
+            const select = document.getElementById("distraction-select");
+            const itemName = select.value;
+
+            if (itemName) {
+                addMessage(itemName);
+            }
+
+            select.selectedIndex = 0;
         }
     </script>
 </body>
