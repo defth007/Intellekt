@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intellekt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Intellekt</h1>
+    <p>Customize your experience</p>
+
+    <button type="button" onclick="addMessage()">Customize message</button>
+
+    <p id="user-message"></p>
+
+    <script>
+        function addMessage() {
+            alert("button clicked");   // test line
+
+            let message = prompt("Enter your message:");
+
+            if (message !== null && message.trim() !== "") {
+                document.getElementById("user-message").textContent = message;
+            }
+        }
+    </script>
+</body>
+</html>
+
