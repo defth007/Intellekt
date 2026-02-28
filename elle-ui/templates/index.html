@@ -14,11 +14,11 @@
             <p class="subtitle">My Distractions</p>
 
             <div id="button-list">
-                <button class="btn btn-primary" type="button" onclick="addMessage('phone')">
+                <button class="btn btn-primary" type="button" onclick="showMessagePopup('phone')">
                     phone
                 </button>
 
-                <button class="btn btn-primary" type="button" onclick="addMessage('food')">
+                <button class="btn btn-primary" type="button" onclick="showMessagePopup('food')">
                     food
                 </button>
             </div>
@@ -33,11 +33,30 @@
     </div>
 
     <script>
-        function addMessage(itemName) {
-            let message = prompt("Enter your message for " + itemName + ":");
+        const customMessages = {
+            phone: "Put your phone away and focus.",
+            food: "Finish your task before eating.",
+            bed: "Stay awake and keep working.",
+            "wine glass": "Save it for later.",
+            tablewear: "Put the tablewear aside for now."
+        };
 
-            if (message !== null && message.trim() !== "") {
-                alert(itemName + ": " + message);
+        function showMessagePopup(itemName) {
+            const currentMessage = customMessages[itemName] || "Default message for " + itemName;
+            const wantsToChange = confirm(
+                itemName + ":\n\n" +
+                currentMessage + "\n\n" +
+                "Press OK to change message.\n" +
+                "Press Cancel to keep it."
+            );
+
+            if (wantsToChange) {
+                const newMessage = prompt("Change message for " + itemName + ":", currentMessage);
+
+                if (newMessage !== null && newMessage.trim() !== "") {
+                    customMessages[itemName] = newMessage;
+                    alert("New message saved for " + itemName + ":\n\n" + newMessage);
+                }
             }
         }
 
@@ -50,8 +69,8 @@
             }
 
             const buttonList = document.getElementById("button-list");
-
             const existingButtons = buttonList.getElementsByTagName("button");
+
             for (let i = 0; i < existingButtons.length; i++) {
                 if (existingButtons[i].textContent.trim() === itemName) {
                     select.selectedIndex = 0;
@@ -64,11 +83,10 @@
             newButton.type = "button";
             newButton.textContent = itemName;
             newButton.onclick = function () {
-                addMessage(itemName);
+                showMessagePopup(itemName);
             };
 
             buttonList.appendChild(newButton);
-
             select.selectedIndex = 0;
         }
     </script>
