@@ -1,13 +1,82 @@
+/* ---------- PAGE ---------- */
+
 body {
-    background-color: powderblue;
+    margin: 0;
+    font-family: "Segoe UI", Verdana, sans-serif;
+    background: #fff6d6;          /* soft warm background */
+    color: #5a3b00;
 }
-h1 {
-    color: blue;
+
+/* center the app */
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+/* main panel */
+.card {
+    background: #fffdf5;          /* creamy white */
+    padding: 30px;
+    border-radius: 16px;
+    width: 420px;
     text-align: center;
+    box-shadow: 0px 12px 30px rgba(255, 185, 60, 0.25);
+    border: 2px solid #ffe2a6;
 }
-p {
-    font-family: verdana;
-    font-size: 20px;
-    border: 2px solid peachpuff;
-    padding: 10px;
+
+/* ---------- TEXT ---------- */
+
+.title {
+    font-size: 34px;
+    margin-bottom: 8px;
+    color: #ff9800;               /* warm orange */
+}
+
+.subtitle {
+    font-size: 18px;
+    color: #b87900;
+    margin-bottom: 25px;
+}
+
+/* ---------- BUTTON ---------- */
+
+.btn {
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 8px 0;
+    width: 100%;
+    transition: all 0.15s ease;
+}
+
+.btn-primary {
+    background: #ffb300;          /* golden yellow */
+    color: #4a2e00;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background: #ffa000;          /* slightly darker on hover */
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+/* ---------- MESSAGE BOX ---------- */
+
+.status-box {
+    background: #fff3c4;          /* light pastel yellow */
+    border: 2px solid #ffd36b;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 20px;
+    min-height: 40px;
+    font-size: 18px;
+    color: #6a4700;
 }
