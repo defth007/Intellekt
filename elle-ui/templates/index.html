@@ -7,35 +7,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Intellekt</h1>
-    <p>Customize your experience</p>
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Intellekt</h1>
+            <p class="subtitle">Customize your experience</p>
 
-    <div class="possible-items">
-        <div class="item-row">
-            <span class="item-name">Cell phone</span>
-            <button type="button" onclick="addMessage('message1')">Customize Message</button>
-            <span id="message1" class="message-output"></span>
-        </div>
+            <button class="btn btn-primary" type="button" onclick="addMessage()">
+                Customize message
+            </button>
 
-        <div class="item-row">
-            <span class="item-name">Food</span>
-            <button type="button" onclick="addMessage('message2')">Customize Message</button>
-            <span id="message2" class="message-output"></span>
-        </div>
-
-        <div class="item-row">
-            <span class="item-name">Person</span>
-            <button type="button" onclick="addMessage('message3')">Customize Message</button>
-            <span id="message3" class="message-output"></span>
+            <p id="user-message" class="status-box"></p>
         </div>
     </div>
 
     <script>
-        function addMessage(messageId) {
-            let message = prompt("Write your message:");
+        function addMessage() {
+            alert("button clicked");   // test line
+
+            let message = prompt("Enter your message:");
 
             if (message !== null && message.trim() !== "") {
-                document.getElementById(messageId).textContent = message;
+                document.getElementById("user-message").textContent = message;
             }
         }
     </script>
