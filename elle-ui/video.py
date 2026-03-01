@@ -11,7 +11,7 @@ import os
 from cs50 import SQL
 
 
-SerialObj = serial.Serial('/dev/cu.usbmodem1101') # COMxx  format on Windows
+SerialObj = serial.Serial('COM3') # COMxx  format on Windows
                   # ttyUSBx format on Linux
 
 SerialObj.baudrate = 9600  # set Baud rate to 9600
@@ -23,7 +23,6 @@ SerialObj.stopbits = 1   # Number of Stop bits = 1
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
-
 # model
 model = YOLO("yolo-Weights/yolov8n.pt")
 
