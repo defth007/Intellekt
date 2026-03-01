@@ -1,2 +1,2 @@
-# Intellect
+# Intellekt
 For intellects
