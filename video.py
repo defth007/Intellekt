@@ -1,6 +1,19 @@
 from ultralytics import YOLO
 import cv2
 import math 
+
+# Python code transmits a byte to Arduino /Microcontroller
+import serial
+import time
+
+SerialObj = serial.Serial('/dev/cu.usbmodem1101') # COMxx  format on Windows
+                  # ttyUSBx format on Linux
+
+SerialObj.baudrate = 9600  # set Baud rate to 9600
+SerialObj.bytesize = 8   # Number of data bits = 8
+SerialObj.parity  ='N'   # No parity
+SerialObj.stopbits = 1   # Number of Stop bits = 1
+
 # start webcam
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -9,7 +22,7 @@ cap.set(4, 480)
 # model
 model = YOLO("yolo-Weights/yolov8n.pt")
 
-# object classes
+# object classesq
 classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
               "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
               "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
@@ -23,9 +36,17 @@ classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "trai
               ]
 
 
+
 while True:
     success, img = cap.read()
     results = model(img, stream=True)
+
+    # if "cell phone" in results:
+    #     SerialObj.write(b'A')    #transmit 'A' (8bit) to micro/Arduino
+    #     time.sleep(0.5)
+    # else:
+    #     SerialObj.write(b'B')
+    #     time.sleep(0.5)
 
     # coordinates
     for r in results:
@@ -53,6 +74,13 @@ while True:
             fontScale = 1
             color = (255, 0, 0)
             thickness = 2
+
+            if classNames[cls] == "cell phone" :
+                SerialObj.write(b'A')    #transmit 'A' (8bit) to micro/Arduino
+                time.sleep(0.5)
+            else:
+                SerialObj.write(b'B')
+                time.sleep(0.5)
 
             cv2.putText(img, classNames[cls], org, font, fontScale, color, thickness)
 
