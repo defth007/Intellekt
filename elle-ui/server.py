@@ -110,6 +110,13 @@ def set_message():
 
     db.execute("INSERT INTO objects (name, message) VALUES (?, ?)", item, text)
 
+    # immediately forward the message to Arduino so the LCD updates
+    try:
+        arduino.send_line("A")
+        arduino.send_line(f"MSG:{text}")
+    except Exception:
+        pass
+
     return jsonify({"ok": True, "item": item, "text": text})
 
 

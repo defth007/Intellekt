@@ -100,6 +100,13 @@
                     }
                     customMessages[currentItem] = newMessage;
                     document.getElementById("popup-message").textContent = newMessage;
+
+                    // also send the message to Arduino immediately
+                    fetch("/arduino/display", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({item: currentItem, text: newMessage})
+                    }).catch((err) => console.error("Arduino display failed", err));
                 } catch (error) {
                     alert("Could not save message. Please try again.");
                     console.error("Save failed:", error);
