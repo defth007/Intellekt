@@ -8,10 +8,16 @@ from cs50 import SQL
 from ultralytics import YOLO
 
 
-SerialObj = serial.Serial("COM3", baudrate=9600, bytesize=8, parity="N", stopbits=1, timeout=0.1)
-time.sleep(2)
-SerialObj.reset_input_buffer()
-SerialObj.reset_output_buffer()
+# serial port to Arduino; leave empty to disable
+ARDUINO_PORT = os.getenv("ARDUINO_PORT", "COM3")
+
+if ARDUINO_PORT:
+    SerialObj = serial.Serial(ARDUINO_PORT, baudrate=9600, bytesize=8, parity="N", stopbits=1, timeout=0.1)
+    time.sleep(2)
+    SerialObj.reset_input_buffer()
+    SerialObj.reset_output_buffer()
+else:
+    SerialObj = None
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "project.db")
@@ -151,21 +157,21 @@ try:
 
         alert_state = active_item is not None
         if alert_state != last_alert_state:
-            if alert_state:
+            if alert_state and SerialObj:
                 SerialObj.write(b"A\n")
-            else:
+            elif SerialObj:
                 SerialObj.write(b"B\n")
             last_alert_state = alert_state
 
         if best_message != last_lcd_message:
-            if best_message:
+            if best_message and SerialObj:
                 payload = f"MSG:{best_message}\n".encode("utf-8")
                 SerialObj.write(payload)
-            else:
+            elif SerialObj:
                 SerialObj.write(b"CLR\n")
             last_lcd_message = best_message
             last_resend = now
-        elif best_message and (now - last_resend) >= RESEND_SECONDS:
+        elif best_message and (now - last_resend) >= RESEND_SECONDS and SerialObj:
             payload = f"MSG:{best_message}\n".encode("utf-8")
             SerialObj.write(payload)
             last_resend = now
