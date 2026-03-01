@@ -14,7 +14,7 @@
             <p class="subtitle">My Distractions</p>
 
             <div id="button-list">
-                <button class="btn btn-primary" type="button" onclick="showPopup('phone')">
+                <button class="btn btn-primary" type="button" onclick="showPopup('cell phone')">
                     phone
                 </button>
 
@@ -51,14 +51,26 @@
     </div>
 
     <script>
-        const customMessages = {
-            phone: "Put your phone away and focus.",
+        const defaultMessages = {
+            "cell phone": "Put your phone away and focus.",
             food: "Finish your task before eating.",
             bed: "Stay awake and keep working.",
             tablewear: "Put the tablewear aside for now."
         };
+        const customMessages = { ...defaultMessages };
 
         let currentItem = "";
+
+        async function loadMessages() {
+            try {
+                const response = await fetch("/messages");
+                if (!response.ok) return;
+                const data = await response.json();
+                Object.assign(customMessages, data);
+            } catch (error) {
+                console.error("Failed to load messages:", error);
+            }
+        }
 
         function showPopup(itemName) {
             currentItem = itemName;
@@ -72,12 +84,26 @@
             document.getElementById("popup-overlay").style.display = "none";
         }
 
-        function customizeMessage() {
+        async function customizeMessage() {
             const newMessage = document.getElementById("popup-input").value.trim();
 
             if (newMessage !== "") {
-                customMessages[currentItem] = newMessage;
-                document.getElementById("popup-message").textContent = newMessage;
+                try {
+                    const response = await fetch("/set_message", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ item: currentItem, text: newMessage })
+                    });
+                    const data = await response.json();
+                    if (!response.ok || !data.ok) {
+                        throw new Error(data.error || "Failed to save message");
+                    }
+                    customMessages[currentItem] = newMessage;
+                    document.getElementById("popup-message").textContent = newMessage;
+                } catch (error) {
+                    alert("Could not save message. Please try again.");
+                    console.error("Save failed:", error);
+                }
             }
         }
 
@@ -110,6 +136,8 @@
             buttonList.appendChild(newButton);
             select.selectedIndex = 0;
         }
+
+        loadMessages();
     </script>
 </body>
 </html>
