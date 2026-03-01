@@ -116,9 +116,9 @@ def set_message():
 
     db.execute("INSERT INTO objects (name, message) VALUES (?, ?)", item, text)
 
-    # immediately forward the message to Arduino so the LCD updates
+    # immediately forward the message text to Arduino; don't trigger the
+    # angry animation so the screen stays readable.
     try:
-        arduino.send_line("A")
         arduino.send_line(f"MSG:{text}")
     except Exception:
         pass
@@ -147,7 +147,7 @@ def arduino_display():
         text = text[:64]
 
     try:
-        arduino.send_line("A")
+        # only send the message body to avoid red angry screen
         arduino.send_line(f"MSG:{text}")
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
