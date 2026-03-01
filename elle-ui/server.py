@@ -2,9 +2,17 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
+from cs50 import SQL
+
+import os
+
+# configure use of SQLite database
+db = SQL("sqlite:///project.db")
+
+
 # In-memory store (resets if server restarts)
 messages = {
-    "phone": "Put your phone away and focus.",
+    "cell phone": "Put your phone away and focus.",
     "food": "Finish your task before eating.",
     "bed": "Stay awake and keep working.",
     "wine glass": "Save it for later.",
@@ -31,7 +39,12 @@ def set_message():
         text = text[:64]
 
     messages[item] = text
+
+    db.execute("INSERT INTO objects (name, message) VALUES (?, ?)", item, text)
+
     return jsonify({"ok": True, "item": item, "text": text})
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
