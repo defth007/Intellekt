@@ -52,7 +52,13 @@ class ArduinoBridge:
         with self._lock:
             self._ensure_connected()
             payload = f"{line}\n".encode("utf-8")
-            self._serial.write(payload)
+            try:
+                self._serial.write(payload)
+                print(f"[ArduinoBridge] wrote: {line}")
+            except Exception as e:
+                # log failure but re-raise so callers can handle
+                print(f"[ArduinoBridge] write failed: {e}")
+                raise
 
     def status(self):
         with self._lock:
